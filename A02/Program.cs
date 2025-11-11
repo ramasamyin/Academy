@@ -10,15 +10,15 @@ using static System.Console;
 
 int n = new Random ().Next (1, 101);
 int input;
-Console.Write ("Guess the number (1-100): ");
+Write ("Guess the number (1-100): ");
 while (!int.TryParse (Console.ReadLine (), out input)) Write ("Enter a valid number: ");
 while (true) {
    if (n == input) {
-      Console.Write ("You are correct");
+      Write ("You are correct");
       break;
    }
-   Console.WriteLine (input < n ? "Your input is Low" : "Your input is high");
-   Console.Write ("Give another try: ");
-   while (!int.TryParse (Console.ReadLine (), out input)) Write ("Enter a valid number: ");
+   WriteLine (input < n ? "Your input is Low" : "Your input is high");
+   Write ("Give another try: ");
+   while (!int.TryParse (ReadLine (), out input)) Write ("Enter a valid number: ");
 }
 
