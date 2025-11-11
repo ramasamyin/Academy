@@ -9,16 +9,15 @@
 using static System.Console;
 
 int n = new Random ().Next (1, 101);
-int input;
-Write ("Guess the number (1-100): ");
-while (!int.TryParse (Console.ReadLine (), out input)) Write ("Enter a valid number: ");
 while (true) {
-   if (n == input) {
-      Write ("You are correct");
+   Write ("Enter your guess: ");
+   if (!int.TryParse (ReadLine (), out int input)) {
+      WriteLine ("Invalid input! Please enter a valid number.");
+      continue;
+   }
+   if (input == n) {
+      WriteLine ("You are correct!");
       break;
    }
-   WriteLine (input < n ? "Your input is Low" : "Your input is high");
-   Write ("Give another try: ");
-   while (!int.TryParse (ReadLine (), out input)) Write ("Enter a valid number: ");
+   WriteLine (input < n ? "Your guess is low." : "Your guess is high.");
 }
-
