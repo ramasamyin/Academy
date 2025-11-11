@@ -5,10 +5,13 @@
 // Program.cs
 // Program to guess a randomly generated number between 1 to 100.
 // ------------------------------------------------------------------------------------------------
+
+using static System.Console;
+
 int n = new Random ().Next (1, 101);
 int input;
 Console.Write ("Guess the number (1-100): ");
-while (!int.TryParse (Console.ReadLine (), out input)) Console.Write ("Enter a valid number: ");
+while (!int.TryParse (Console.ReadLine (), out input)) Write ("Enter a valid number: ");
 while (true) {
    if (n == input) {
       Console.Write ("You are correct");
@@ -16,11 +19,6 @@ while (true) {
    }
    Console.WriteLine (input < n ? "Your input is Low" : "Your input is high");
    Console.Write ("Give another try: ");
-   while (!int.TryParse (Console.ReadLine (), out input)) ;
+   while (!int.TryParse (Console.ReadLine (), out input)) Write ("Enter a valid number: ");
 }
-
-
-
-
-
 
