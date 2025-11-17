@@ -7,14 +7,9 @@
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
 
-char[] letters = { 'U', 'X', 'A', 'L', 'T', 'N', 'E' };
+string letters = "UXLATNE";
 char required = letters[0];
-string filePath = @"C:\Users\ramasamyin\Downloads\words.txt";
-if (!File.Exists (filePath)) {
-   Write ("Path is not valid");
-   return;
-}
-var allWords = File.ReadAllLines (filePath).Select (w => w.Trim ().ToLower ()).Where (w => w.Length >= 4);
+var allWords = File.ReadAllLines ("words.txt").Select (w => w.Trim ().ToLower ()).Where (w => w.Length >= 4);
 var validWords = new List<(string word, int score, bool isPangram)> ();
 foreach (var word in allWords) {
    if (!word.Contains (char.ToLower (required))) continue;
