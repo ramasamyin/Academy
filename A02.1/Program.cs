@@ -5,7 +5,6 @@
 // Program.cs
 // Guessing the number using MSB to LSB or LSB to MSB approach
 // ------------------------------------------------------------------------------------------------
-using System.Security.Cryptography;
 using static System.Console;
 namespace A02._1;
 
@@ -41,17 +40,18 @@ class Program {
 
    // Guessing the number using LSB to MSB approach
    static int GuessLsb () {
-      int guess = 0;
-      int bitValue = 1;
-      for (int i = 0; i < 7; i++) {
+      int answer = 0;
+      for (int bit = 0; bit < 7; bit++) {
+         int div = 1 << (bit + 1),
+         expectedRemainder = answer % div;
          ConsoleKey response;
          do {
-            Write ($"\nDivide the number by {bitValue}. Is the quotient odd (O) or even (E): ");
+            Write ($"\nIf the number is divided by {div}, is the remainder {expectedRemainder}? (Y/N): ");
             response = ReadKey ().Key;
-         } while (response != ConsoleKey.O && response != ConsoleKey.E);
-         if (response == ConsoleKey.O) guess += bitValue;
-         bitValue <<= 1;
+         }
+         while (response != ConsoleKey.Y && response != ConsoleKey.N);
+         if (response == ConsoleKey.N) answer |= 1 << bit;
       }
-      return guess;
+      return answer;
    }
 }
