@@ -1,4 +1,11 @@
-﻿namespace A04;
+﻿// ------------------------------------------------------------------------------------------------
+// Training ~ A training program for new joinees at Metamation, Batch- July 2025.
+// Copyright (c) Metamation India.
+// ------------------------------------------------------------------
+// Program.cs
+// To build a frequency table with occurrence of all the letters
+// ------------------------------------------------------------------------------------------------
+namespace A04;
 
 class Program {
    static void Main () {
