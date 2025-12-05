@@ -3,7 +3,7 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------
 // Program.cs
-// Program to find all valid Spelling Bee words form the given dictionary
+// Program to find all valid Spelling Bee words from the given dictionary
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
 
