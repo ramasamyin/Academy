@@ -7,32 +7,40 @@
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
 
-string letters = "UXLATNE";
+char[] letters = { 'U', 'X', 'L', 'A', 'T', 'N', 'E' };
 char required = letters[0];
-var allWords = File.ReadAllLines ("words.txt").Select (w => w.Trim ().ToLower ()).Where (w => w.Length >= 4);
+var allWords = File.ReadAllLines ("words.txt").Select (w => w.Trim ()).Where (w => w.Length >= 4);
 var validWords = new List<(string word, int score, bool isPangram)> ();
 foreach (var word in allWords) {
-   if (!word.Contains (char.ToLower (required))) continue;
-   if (word.Any (c => !letters.Contains (char.ToUpper (c)))) continue;
-   bool isPangram = letters.All (l => word.Contains (char.ToLower (l)));
-   int score = (word.Length == 4) ? 1 : word.Length;
-   if (isPangram) score += 7;
+   if (!IsValidWord (word, letters, required))
+      continue;
+   var (score, isPangram) = GetScoreAndPangram (word, letters);
    validWords.Add ((word, score, isPangram));
 }
-var sorted = validWords.OrderByDescending (w => w.score).ThenBy (w => w.word).ToList ();
-var total = sorted.Sum (v => v.score);
-foreach (var (word, score, isPangram) in sorted) {
-   string scoreText = score.ToString ().PadLeft (3);
-   if (isPangram) {
-      ForegroundColor = ConsoleColor.Green;
-      WriteLine ($"{scoreText}. {word}");
-      ResetColor ();
-   } else {
-      WriteLine ($"{scoreText}. {word}");
-   }
+PrintResults (validWords);
+
+// Checks whether the word is valid based on the given letters and required letter
+static bool IsValidWord (string word, char[] letters, char required) {
+   if (!word.Contains (required)) return false;
+   return word.All (letters.Contains);
 }
-WriteLine ("\n---");
-WriteLine ($"{total} total");
 
+// Returns score and checks whether the word is a pangram
+static (int score, bool isPangram) GetScoreAndPangram (string word, char[] letters) {
+   bool isPangram = letters.All (word.Contains);
+   int score = (word.Length == 4 ? 1 : word.Length) + (isPangram ? 7 : 0);
+   return (score, isPangram);
+}
 
-
+// Prints the results to the console
+static void PrintResults (List<(string word, int score, bool isPangram)> validWords) {
+   int total = 0;
+   foreach (var (word, score, isPangram) in validWords.OrderByDescending (w => w.score).ThenBy (w => w.word)) {
+      if (isPangram) Console.ForegroundColor = ConsoleColor.Green;
+      WriteLine ($"{score,3}. {word}");
+      if (isPangram) Console.ResetColor ();
+      total += score;
+   }
+   WriteLine ("---");
+   WriteLine ($"{total} total");
+}
