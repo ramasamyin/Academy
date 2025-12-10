@@ -26,7 +26,6 @@ static bool IsValidWord (string word, char[] letters, char required) {
        && word.All (letters.Contains);
 }
 
-
 // Score and Pangram check
 static (int score, bool isPangram) GetScoreAndPangram (string word, char[] letters) {
    bool isPangram = letters.All (word.Contains);
@@ -40,7 +39,7 @@ static void PrintResults (List<(string word, int score, bool isPangram)> words) 
    foreach (var (word, score, isPangram) in words.OrderByDescending (w => w.score).ThenBy (w => w.word)) {
       if (isPangram) ForegroundColor = ConsoleColor.Green;
       WriteLine ($"{score,3}. {word}");
-      if (isPangram) ResetColor ();
+      ResetColor ();
       total += score;
    }
    WriteLine ("---");
