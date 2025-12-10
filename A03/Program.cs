@@ -9,7 +9,7 @@ using static System.Console;
 
 char[] letters = { 'U', 'X', 'L', 'A', 'T', 'N', 'E' };
 char required = letters[0];
-var allWords = File.ReadAllLines ("words.txt").Select (w => w.Trim ()).Where (w => w.Length >= 4);
+var allWords = File.ReadAllLines ("words.txt").Select (w => w.Trim ());
 var validWords = new List<(string word, int score, bool isPangram)> ();
 foreach (var word in allWords) {
    if (!IsValidWord (word, letters, required))
@@ -19,26 +19,28 @@ foreach (var word in allWords) {
 }
 PrintResults (validWords);
 
-// Checks whether the word is valid based on the given letters and required letter
+// Check valid word: length ≥ 4, must contain required letter, only allowed letters
 static bool IsValidWord (string word, char[] letters, char required) {
-   if (!word.Contains (required)) return false;
-   return word.All (letters.Contains);
+   return word.Length >= 4
+       && word.Contains (required)
+       && word.All (letters.Contains);
 }
 
-// Returns score and checks whether the word is a pangram
+
+// Score and Pangram check
 static (int score, bool isPangram) GetScoreAndPangram (string word, char[] letters) {
    bool isPangram = letters.All (word.Contains);
-   int score = (word.Length == 4 ? 1 : word.Length) + (isPangram ? 7 : 0);
-   return (score, isPangram);
+   int baseScore = (word.Length == 4) ? 1 : word.Length + (isPangram ? 7 : 0);
+   return (baseScore, isPangram);
 }
 
-// Prints the results to the console
-static void PrintResults (List<(string word, int score, bool isPangram)> validWords) {
+// Print results
+static void PrintResults (List<(string word, int score, bool isPangram)> words) {
    int total = 0;
-   foreach (var (word, score, isPangram) in validWords.OrderByDescending (w => w.score).ThenBy (w => w.word)) {
-      if (isPangram) Console.ForegroundColor = ConsoleColor.Green;
+   foreach (var (word, score, isPangram) in words.OrderByDescending (w => w.score).ThenBy (w => w.word)) {
+      if (isPangram) ForegroundColor = ConsoleColor.Green;
       WriteLine ($"{score,3}. {word}");
-      if (isPangram) Console.ResetColor ();
+      if (isPangram) ResetColor ();
       total += score;
    }
    WriteLine ("---");
