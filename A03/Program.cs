@@ -13,7 +13,7 @@ var allWords = File.ReadAllLines ("words.txt");
 var validWords = new List<(string word, int score, bool isPangram)> ();
 foreach (var word in allWords) {
    if (!IsValidWord (word, letters, required)) continue;
-   var (s, p) = GetScoreAndPangram (word, letters);
+   var (s, p) = GetScoreAndPangram (word);
    validWords.Add ((word, s, p));
 }
 PrintResults (validWords);
@@ -24,7 +24,7 @@ static bool IsValidWord (string word, char[] letters, char required) => word.Len
                                                                         && word.All (letters.Contains);
 
 // Calculates score, checks if the word is a pangram and adds extra points if so
-static (int s, bool p) GetScoreAndPangram (string word, char[] letters) {
+(int s, bool p) GetScoreAndPangram (string word) {
    bool isPangram = letters.All (word.Contains);
    int score = (word.Length == 4) ? 1 : word.Length + (isPangram ? 7 : 0);
    return (score, isPangram);
