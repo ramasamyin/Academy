@@ -14,13 +14,13 @@ do {
    choice = ReadKey ().Key;
 } while (choice != ConsoleKey.M && choice != ConsoleKey.L);
 if (choice == ConsoleKey.M) WriteLine ($"\nYour number is : {GuessMSB ()}");
-else if (choice == ConsoleKey.L) WriteLine ($"\nYour number is : {GuessLsb ()}");
+else if (choice == ConsoleKey.L) WriteLine ($"\nYour number is : {GuessLSB ()}");
 else WriteLine ("Invalid option. Please restart the program and choose 'M' or 'L'.");
 
 // Guessing the number using MSB to LSB approach
 static int GuessMSB () {
    int low = 1;
-   int high = 127;
+   int high = 100;
    while (low < high) {
       int mid = (low + high) / 2;
       ConsoleKey response;
@@ -35,7 +35,7 @@ static int GuessMSB () {
 }
 
 // Guessing the number using LSB to MSB approach
-static int GuessLsb () {
+static int GuessLSB () {
    int answer = 0;
    for (int bit = 0; bit < 7; bit++) {
       int div = 1 << (bit + 1),
@@ -50,4 +50,3 @@ static int GuessLsb () {
    }
    return answer;
 }
-
