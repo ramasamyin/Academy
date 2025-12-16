@@ -12,16 +12,16 @@ char required = letters[0];
 var allWords = File.ReadAllLines ("words.txt");
 var validWords = new List<(string word, int score, bool isPangram)> ();
 foreach (var word in allWords) {
-   if (!IsValidWord (word, letters, required)) continue;
+   if (!IsValidWord (word)) continue;
    var (s, p) = GetScoreAndPangram (word);
    validWords.Add ((word, s, p));
 }
 PrintResults (validWords);
 
 // Check valid word: length ≥ 4, must contain required letter, only allowed letters
-static bool IsValidWord (string word, char[] letters, char required) => word.Length >= 4
-                                                                        && word.Contains (required)
-                                                                        && word.All (letters.Contains);
+bool IsValidWord (string word) => word.Length >= 4
+                               && word.Contains (required)
+                               && word.All (letters.Contains);
 
 // Calculates score, checks if the word is a pangram and adds extra points if so
 (int s, bool p) GetScoreAndPangram (string word) {
@@ -31,7 +31,7 @@ static bool IsValidWord (string word, char[] letters, char required) => word.Len
 }
 
 // Prints results
-static void PrintResults (List<(string word, int score, bool isPangram)> words) {
+void PrintResults (List<(string word, int score, bool isPangram)> words) {
    int total = 0;
    foreach (var (word, score, isPangram) in words.OrderByDescending (w => w.score).ThenBy (w => w.word)) {
       if (isPangram) ForegroundColor = ConsoleColor.Green;
