@@ -38,15 +38,20 @@ static int GuessMSB () {
 static int GuessLSB () {
    int answer = 0;
    for (int bit = 0; bit < 7; bit++) {
-      int div = 1 << (bit + 1),
-      expectedRemainder = answer % div;
+      int div = 1 << (bit + 1);
+      int expectedRemainder = answer % div;
       ConsoleKey response;
       do {
          Write ($"\nIf the number is divided by {div}, is the remainder {expectedRemainder}? (Y/N): ");
          response = ReadKey ().Key;
       }
       while (response != ConsoleKey.Y && response != ConsoleKey.N);
-      if (response == ConsoleKey.N) answer |= 1 << bit;
+      if (response == ConsoleKey.N)
+         answer |= 1 << bit;
+   }
+   if (answer < 1 || answer > 100) {
+      WriteLine ("\nYour answers are inconsistent for a number between 1 and 100.");
+      return -1;
    }
    return answer;
 }
