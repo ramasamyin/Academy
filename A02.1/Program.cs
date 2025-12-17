@@ -7,7 +7,7 @@
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
 
-WriteLine ("Think of a number between 1 and 100. I'll guess it");
+WriteLine ("Think of a number between 1 and 127. I'll guess it");
 ConsoleKey choice;
 do {
    Write ("\nPress 'M' for MSB To LSB mode, or 'L' for LSB to MSB mode: ");
@@ -20,7 +20,7 @@ else WriteLine ("Invalid option. Please restart the program and choose 'M' or 'L
 // Guessing the number using MSB to LSB approach
 static int GuessMSB () {
    int low = 1;
-   int high = 100;
+   int high = 127;
    while (low < high) {
       int mid = (low + high) / 2;
       ConsoleKey response;
@@ -48,10 +48,6 @@ static int GuessLSB () {
       while (response != ConsoleKey.Y && response != ConsoleKey.N);
       if (response == ConsoleKey.N)
          answer |= 1 << bit;
-   }
-   if (answer < 1 || answer > 100) {
-      WriteLine ("\nYour answers are inconsistent for a number between 1 and 100.");
-      return -1;
    }
    return answer;
 }
