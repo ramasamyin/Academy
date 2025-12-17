@@ -8,7 +8,6 @@
 using static System.Console;
 
 char[] letters = { 'U', 'X', 'L', 'A', 'T', 'N', 'E' };
-char required = letters[0];
 var allWords = File.ReadAllLines ("words.txt");
 var validWords = new List<(string word, int score, bool isPangram)> ();
 foreach (var word in allWords) {
@@ -20,7 +19,7 @@ PrintResults (validWords);
 
 // Check valid word: length ≥ 4, must contain required letter, only allowed letters
 bool IsValidWord (string word) => word.Length >= 4
-                               && word.Contains (required)
+                               && word.Contains (letters[0])
                                && word.All (letters.Contains);
 
 // Calculates score, checks if the word is a pangram and adds extra points if so
