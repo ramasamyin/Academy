@@ -9,34 +9,29 @@ namespace A04;
 
 class Program {
    static void Main () {
-      var allWords = File.ReadAllLines ("words.txt");
+      var words = File.ReadAllText ("words.txt");
+      // Using LINQ
+      var freq1 = GetFreq1 (words);
       Console.WriteLine ("Using LINQ");
-      var freq1 = GetFreq1 (allWords);
-      foreach (var g in freq1) Console.WriteLine ($"{g.Key}-{g.Count ()}");
+      foreach (var g in freq1) Console.WriteLine ($"{g.Letter} - {g.Count}");
+      // Without using LINQ
+      var freq2 = GetFreq2 (words);
       Console.WriteLine ("\nWithout using LINQ");
-      var freq2 = GetFreq2 (allWords);
-      int limit = Math.Min (7, freq2.Count);
-      for (int i = 0; i < limit; i++) Console.WriteLine ($"{freq2[i].Key}-{freq2[i].Value}");
+      foreach (var g in freq2) Console.WriteLine ($"{g.Key} - {g.Value}");
    }
 
-   static IEnumerable<IGrouping<char, char>> GetFreq1 (string[] allWords) {
-      var charFrequency = allWords.SelectMany (w => w)
-                                    .GroupBy (c => c)
-                                    .OrderByDescending (g => g.Count ())
-                                    .Take (7);
-      return charFrequency;
-   }
+   static IEnumerable<(char Letter, int Count)> GetFreq1 (string words) => words.Where (char.IsLetter)
+                                                                  .GroupBy (c => c)
+                                                                  .Select (g => (Letter: g.Key, Count: g.Count ()))
+                                                                  .OrderByDescending (g => g.Count)
+                                                                  .Take (7);
 
-   static List<KeyValuePair<char, int>> GetFreq2 (string[] allWords) {
+   static IEnumerable<KeyValuePair<char, int>> GetFreq2 (string words) {
       Dictionary<char, int> charFrequency = [];
-      foreach (string word in allWords) {
-         foreach (char c in word) {
-            if (charFrequency.TryGetValue (c, out int value)) charFrequency[c] = ++value;
-            else charFrequency[c] = 1;
-         }
+      foreach (char c in words) {
+         if (!char.IsLetter (c)) continue;
+         charFrequency[c] = charFrequency.TryGetValue (c, out int value) ? ++value : 1;
       }
-      List<KeyValuePair<char, int>> freqList = [.. charFrequency];
-      freqList.Sort ((a, b) => b.Value.CompareTo (a.Value));
-      return freqList;
+      return charFrequency.OrderByDescending (c => c.Value).Take (7);
    }
 }
