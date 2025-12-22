@@ -8,9 +8,9 @@
 using static System.Console;
 
 char[] letters = { 'U', 'X', 'L', 'A', 'T', 'N', 'E' };
-var allWords = File.ReadAllLines ("words.txt");
-var validWords = new List<(string word, int score, bool isPangram)> ();
-foreach (var word in allWords) {
+var words = File.ReadAllLines ("words.txt");
+List<(string Word, int Score, bool IsPangram)> validWords = [];
+foreach (var word in words) {
    if (!IsValidWord (word)) continue;
    var (s, p) = GetScoreAndPangram (word);
    validWords.Add ((word, s, p));
