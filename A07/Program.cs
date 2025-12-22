@@ -1,9 +1,16 @@
-﻿namespace A07;
+﻿// ------------------------------------------------------------------------------------------------
+// Training ~ A training program for new joinees at Metamation, Batch- July 2025.
+// Copyright (c) Metamation India.
+// ------------------------------------------------------------------
+// Program.cs
+// Program to parse a string input into a double without using built-in parsing methods
+// ------------------------------------------------------------------------------------------------
+namespace A07;
 
 class Program {
    static void Main () {
-      double output = ParseDouble ("13.0");
-      Console.WriteLine (output);
+      Console.Write ("Enter an input: ");
+      Console.WriteLine (ParseDouble (Console.ReadLine () ?? ""));
    }
 
    public static double ParseDouble (string input) {
@@ -42,7 +49,7 @@ class Program {
       // Ensure at least one digit was found
       if (!hasDigits) Fatal ();
 
-      // Exponent part (scientific notation)
+      // Exponent part
       if (i < input.Length && (input[i] == 'e' || input[i] == 'E')) {
          i++;
          int expSign = 1;
