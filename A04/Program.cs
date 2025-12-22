@@ -17,10 +17,10 @@ class Program {
       // Without using LINQ
       var freq2 = GetFreq2 (words);
       Console.WriteLine ("\nWithout using LINQ");
-      foreach (var g in freq2) Console.WriteLine ($"{g.Key} - {g.Value}");
+      foreach (var (Key, Value) in freq2) Console.WriteLine ($"{Key} - {Value}");
    }
 
-   static IEnumerable<(char Letter, int Count)> GetFreq1 (string words) => words.Where (char.IsLetter)
+   static IEnumerable<(char Letter, int Count)> GetFreq1 (string words) => words
                                                                   .GroupBy (c => c)
                                                                   .Select (g => (Letter: g.Key, Count: g.Count ()))
                                                                   .OrderByDescending (g => g.Count)
@@ -29,8 +29,7 @@ class Program {
    static IEnumerable<KeyValuePair<char, int>> GetFreq2 (string words) {
       Dictionary<char, int> charFrequency = [];
       foreach (char c in words) {
-         if (!char.IsLetter (c)) continue;
-         charFrequency[c] = charFrequency.TryGetValue (c, out int value) ? ++value : 1;
+         if (char.IsLetter (c)) charFrequency[c] = charFrequency.TryGetValue (c, out int value) ? ++value : 1;
       }
       return charFrequency.OrderByDescending (c => c.Value).Take (7);
    }
