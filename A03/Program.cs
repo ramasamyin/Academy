@@ -9,7 +9,7 @@ using static System.Console;
 
 char[] letters = { 'U', 'X', 'L', 'A', 'T', 'N', 'E' };
 var allWords = File.ReadAllLines ("words.txt");
-var validWords = new List<(string word, int score, bool isPangram)> ();
+List<(string Word, int Score, bool IsPangram)> validWords = [];
 foreach (var word in allWords) {
    if (!IsValidWord (word)) continue;
    var (s, p) = GetScoreAndPangram (word);
@@ -23,7 +23,7 @@ bool IsValidWord (string word) => word.Length >= 4
                                && word.All (letters.Contains);
 
 // Calculates score, checks if the word is a pangram and adds extra points if so
-(int s, bool p) GetScoreAndPangram (string word) {
+(int Score, bool IsPangram) GetScoreAndPangram (string word) {
    bool isPangram = letters.All (word.Contains);
    int score = (word.Length == 4) ? 1 : word.Length + (isPangram ? 7 : 0);
    return (score, isPangram);
@@ -32,12 +32,12 @@ bool IsValidWord (string word) => word.Length >= 4
 // Prints results
 void PrintResults (List<(string word, int score, bool isPangram)> words) {
    int total = 0;
-   foreach (var (word, score, isPangram) in words.OrderByDescending (w => w.score).ThenBy (w => w.word)) {
-      if (isPangram) ForegroundColor = ConsoleColor.Green;
-      WriteLine ($"{score,3}. {word}");
+   foreach (var (Word, Score, IsPangram) in words.OrderByDescending (w => w.score).ThenBy (w => w.word)) {
+      if (IsPangram) ForegroundColor = ConsoleColor.Green;
+      WriteLine ($"{Score,3}. {Word}");
       ResetColor ();
-      total += score;
+      total += Score;
    }
-   WriteLine ("---");
+   WriteLine ("----");
    WriteLine ($"{total} total");
 }
