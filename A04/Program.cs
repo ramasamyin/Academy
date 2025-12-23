@@ -13,23 +13,27 @@ class Program {
       // Using LINQ
       var freq1 = GetFreq1 (words);
       Console.WriteLine ("Using LINQ");
-      foreach (var g in freq1) Console.WriteLine ($"{g.Letter} - {g.Count}");
+      foreach (var (Letter, Count) in freq1) Console.WriteLine ($"{Letter} - {Count}");
       // Without using LINQ
       var freq2 = GetFreq2 (words);
       Console.WriteLine ("\nWithout using LINQ");
       foreach (var (Key, Value) in freq2) Console.WriteLine ($"{Key} - {Value}");
    }
 
-   static IEnumerable<(char Letter, int Count)> GetFreq1 (string words) => words
-                                                                  .GroupBy (c => c)
-                                                                  .Select (g => (Letter: g.Key, Count: g.Count ()))
-                                                                  .OrderByDescending (g => g.Count)
-                                                                  .Take (7);
+   static IEnumerable<(char Letter, int Count)> GetFreq1 (string words) => words.Where (char.IsLetter)
+                                                                                .GroupBy (c => c)
+                                                                                .Select (g => (Letter: g.Key, Count: g.Count ()))
+                                                                                .OrderByDescending (g => g.Count)
+                                                                                .Take (7);
 
    static IEnumerable<KeyValuePair<char, int>> GetFreq2 (string words) {
       Dictionary<char, int> charFrequency = [];
-      foreach (char c in words) {
-         if (char.IsLetter (c)) charFrequency[c] = charFrequency.TryGetValue (c, out int value) ? ++value : 1;
+      for (char c = 'A'; c <= 'Z'; c++) {
+         int count = 0;
+         foreach (char ch in words) {
+            if (ch == c) count++;
+         }
+         charFrequency[c] = count;
       }
       return charFrequency.OrderByDescending (c => c.Value).Take (7);
    }
