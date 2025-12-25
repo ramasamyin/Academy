@@ -11,8 +11,10 @@ namespace A04;
 class Program {
    static void Main () {
       var words = File.ReadAllText ("words.txt");
-      PrintFrequency ("Using LINQ", GetFreq1 (words));
-      PrintFrequency ("\nWithout using LINQ", GetFreq2 (words));
+      WriteLine ("Using LINQ");
+      PrintFreq (GetFreq1 (words));
+      WriteLine ("\nWithout using LINQ");
+      PrintFreq (GetFreq2 (words));
    }
 
    // Using LINQ
@@ -27,13 +29,12 @@ class Program {
       Dictionary<char, int> charFrequency = [];
       for (char c = 'A'; c <= 'Z'; c++) charFrequency[c] = 0;
       foreach (char ch in words) {
-         if (ch >= 'A' && ch <= 'Z') charFrequency[ch]++;
+         if (ch >= 'A' && ch <= 'Z') charFrequency[ch] = charFrequency.GetValueOrDefault (ch) + 1;
       }
       return charFrequency.OrderByDescending (c => c.Value).Take (7);
    }
 
-   static void PrintFrequency (string title, IEnumerable<KeyValuePair<char, int>> freq) {
-      WriteLine (title);
-      foreach (var (key, value) in freq) WriteLine ($"{key} - {value}");
+   static void PrintFreq (IEnumerable<KeyValuePair<char, int>> freq) {
+      foreach (var (letter, count) in freq) WriteLine ($"{letter} - {count}");
    }
 }
