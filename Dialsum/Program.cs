@@ -1,4 +1,4 @@
-﻿string[] instructions = File.ReadAllLines ("C:\\Work\\Academy\\Dialsum\\dial.txt");
+﻿string[] instructions = File.ReadAllLines ("dial.txt");
 int start = 50;
 int cnt = 0;
 int currentPosition;
