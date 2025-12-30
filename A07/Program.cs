@@ -22,10 +22,10 @@ class Program {
         { "e10", double.NaN }, { "5e", double.NaN }, { "+-", double.NaN }
       };
 
-      foreach (var (input, expected) in tests) {
-         double actual = ParseDouble (input);
-         bool match = double.IsNaN (expected) ? double.IsNaN (actual) : Abs (actual - expected) < 1e-6;
-         WriteLine ($"Input: {input}\nExpected: {expected}\nActual: {actual}");
+      foreach (var (Input, Expected) in tests) {
+         double actual = ParseDouble (Input);
+         bool match = double.IsNaN (Expected) ? double.IsNaN (actual) : Abs (actual - Expected) < 1e-6;
+         WriteLine ($"Input: {Input}\nExpected: {Expected}\nActual: {actual}");
          ForegroundColor = match ? Green : Red;
          WriteLine (match ? "PASS\n" : "FAIL\n");
          ResetColor ();
@@ -53,7 +53,8 @@ class Program {
          }
       }
       // Exponent part
-      if (i < length && (input[i++] is 'e' or 'E')) {
+      if (i < length && (input[i] is 'e' or 'E')) {
+         i++;
          int expSign = 1;
          if (i < length && (input[i] is '-' or '+')) expSign = (input[i++] == '-') ? -1 : 1;
          int exponent = 0;
@@ -63,3 +64,4 @@ class Program {
       return sign * value;
    }
 }
+
