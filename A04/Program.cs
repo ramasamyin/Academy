@@ -33,6 +33,6 @@ class Program {
    }
 
    static void PrintFreq (IEnumerable<KeyValuePair<char, int>> freq) {
-      foreach (var (letter, count) in freq) WriteLine ($"{letter} - {count}");
+      foreach (var (Letter, Count) in freq) WriteLine ($"{Letter} - {Count}");
    }
 }
