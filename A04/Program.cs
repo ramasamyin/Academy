@@ -27,10 +27,8 @@ class Program {
    // Without using LINQ
    static IEnumerable<KeyValuePair<char, int>> GetFreq2 (string words) {
       Dictionary<char, int> charFrequency = [];
-      for (char c = 'A'; c <= 'Z'; c++) charFrequency[c] = 0;
-      foreach (char ch in words) {
+      foreach (char ch in words)
          if (ch >= 'A' && ch <= 'Z') charFrequency[ch] = charFrequency.GetValueOrDefault (ch) + 1;
-      }
       return charFrequency.OrderByDescending (c => c.Value).Take (7);
    }
 
