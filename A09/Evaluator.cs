@@ -1,11 +1,10 @@
 ﻿namespace A09;
-class EvalException : Exception {
-   public EvalException (string message) : base (message) { }
+class EvalException (string message) : Exception (message) {
 }
 
 class Evaluator {
    public double Evaluate (string text) {
-      List<Token> tokens = new ();
+      List<Token> tokens = [];
       var tokenizer = new Tokenizer (this, text);
       for (; ; ) {
          var token = tokenizer.Next ();
@@ -33,36 +32,53 @@ class Evaluator {
       if (mVars.TryGetValue (name, out double f)) return f;
       throw new EvalException ($"Unknown variable: {name}");
    }
-   readonly Dictionary<string, double> mVars = new ();
+
+   readonly Dictionary<string, double> mVars = [];
+   static Token? mPrevToken;
 
    void Process (Token token) {
       switch (token) {
          case TNumber num:
             mOperands.Push (num.Value);
             break;
-         case TOperator op:
-            while (mOperators.Count > 0 && mOperators.Peek ().Priority > op.Priority)
-               ApplyOperator ();
-            mOperators.Push (op);
-            break;
          case TPunctuation p:
             BasePriority += p.Punct == '(' ? 10 : -10;
+            break;
+         case TOperator op:
+            if (op is TOpArithmetic arith && arith.Op == '-') {
+               if (mPrevToken == null || mPrevToken is TOperator || (mPrevToken is TPunctuation p && p.Punct == '('))
+                  op = new TOpUnary (this, '-', arith.InPara);
+            }
+            while (mOperators.Count > 0 && mOperators.Peek ().Priority >= op.Priority) ApplyOperator ();
+            mOperators.Push (op);
             break;
          default:
             throw new EvalException ($"Unknown token: {token}");
       }
+      if (token is not TEnd) mPrevToken = token;
    }
    readonly Stack<double> mOperands = new ();
    readonly Stack<TOperator> mOperators = new ();
 
    void ApplyOperator () {
+      if (mOperators.Count == 0) return;
       var op = mOperators.Pop ();
       var f1 = mOperands.Pop ();
-      if (op is TOpFunction func) mOperands.Push (func.Evaluate (f1));
-      else if (op is TOpArithmetic arith) {
-         var f2 = mOperands.Pop ();
-         mOperands.Push (arith.Evaluate (f2, f1));
+      switch (op) {
+         case TOpFunction func:
+            mOperands.Push (func.Evaluate (f1));
+            break;
+         case TOpUnary unary:
+            mOperands.Push (unary.Apply (f1));
+            break;
+         case TOpArithmetic arith:
+            var f2 = mOperands.Pop ();
+            mOperands.Push (arith.Evaluate (f2, f1));
+            break;
+         default:
+            throw new EvalException ($"Unknown operator: {op}");
       }
    }
 }
+
 
