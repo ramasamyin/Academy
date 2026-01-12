@@ -6,6 +6,7 @@ class Evaluator {
    public double Evaluate (string text) {
       List<Token> tokens = [];
       var tokenizer = new Tokenizer (this, text);
+      mPrevToken = null;
       for (; ; ) {
          var token = tokenizer.Next ();
          if (token is TEnd) break;
@@ -80,5 +81,3 @@ class Evaluator {
       }
    }
 }
-
-

@@ -9,6 +9,8 @@ class Tokenizer (Evaluator eval, string text) {
       while (mN < mText.Length) {
          char ch = char.ToLower (mText[mN++]);
          switch (ch) {
+            case ' ' or '\t': continue;
+            case (>= '0' and <= '9') or '.': return GetNumber ();
             case '(':
                inPara = true;
                return new TPunctuation (ch);
